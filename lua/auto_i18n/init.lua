@@ -77,10 +77,8 @@ end
 --   local _, start_quote = before_cursor:find('t%s*%(%s*["\']')
 --   return start_quote ~= nil
 -- end
-
-function source:is_available()
-  print("called")
-  return true
+function source:get_trigger_characters()
+  return { '"', '.' }
 end
 
 function source:complete(params, callback)
