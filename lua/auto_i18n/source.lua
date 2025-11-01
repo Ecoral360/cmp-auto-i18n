@@ -84,7 +84,7 @@ local function setup(opts)
 
   cmp.register_source("i18n", source:new())
 
-  table.insert(opts.sources, { name = 'i18n' })
+  table.insert(opts.sources, 1, { name = 'i18n' })
   cmp.setup {
     sources = opts.sources,
 
