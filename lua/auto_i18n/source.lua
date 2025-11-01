@@ -36,79 +36,78 @@ end
 
 local i18n = { get_keys = load_keys, cache_keys = load_keys() }
 
----@class setupOpts
----@field paths table<string> the paths where to look for your translation files
----@field sources table<string> the cmp sources
-
----comment
----@param opts setupOpts
-local function setup(opts)
-  vim.api.nvim_create_user_command('I18nRefresh',
-    function() i18n.cache_keys = i18n.get_keys(opts.paths) end, {}
-  )
-
-  local source = {}
-
-  function source:new()
-    return setmetatable({}, { __index = self })
-  end
-
-  -- function source:get_keyword_pattern()
-  --   -- return [[(\w|\.|-)+]] -- letters, digits, _, ., -
-  -- end
-  --
-
-  function source:get_keyword_pattern()
-    return
-    [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\%(\w\|á\|Á\|é\|É\|í\|Í\|ó\|Ó\|ú\|Ú\)*\%(\%(-|\.\)\%(\w\|á\|Á\|é\|É\|í\|Í\|ó\|Ó\|ú\|Ú\)*\)*\)]]
-  end
-
-  function source:is_available()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-    local line = vim.api.nvim_get_current_line()
-    local before_cursor = line:sub(1, col)
-
-    -- match t(" ... ") or t(' ... ')
-    local _, start_quote = before_cursor:find('t%s*%(%s*["\']')
-    return start_quote ~= nil
-  end
-
-  function source:complete(ctx, callback)
-    local items = {}
-    for _, key in ipairs(i18n.cache_keys) do
-      table.insert(items, { label = key, kind = vim.lsp.protocol.CompletionItemKind.Value })
-    end
-    callback({ items = items })
-  end
-
-  -- table.insert(opts.sources, { name = 'i18n' })
-  -- cmp.setup {
-  --   sources = opts.sources,
-  --
-  --   mapping = cmp.mapping.preset.insert({
-  --     ['<Tab>'] = nil,
-  --     ['<S-Tab>'] = nil,
-  --   }),
-  --
-  --   snippet = {
-  --     expand = function(args)
-  --       local luasnip = require('luasnip')
-  --       luasnip.lsp_expand(args.body) -- For `luasnip` users.
-  --     end
-  --   },
-  --   enabled = function()
-  --     -- disable completion in comments
-  --     local context = require 'cmp.config.context'
-  --     -- keep command mode completion enabled when cursor is in a comment
-  --     -- if vim.api.nvim_get_mode().mode == 'c' then
-  --     --   return true
-  --     -- else
-  --     --   return not context.in_treesitter_capture("comment") and not context.in_syntax_group("Comment")
-  --     -- end
-  --     return true
-  --   end
-  -- }
-  return source
+local function refresh_keys()
+  i18n.cache_keys = i18n.load_keys()
 end
 
-return { setup = setup }
+-- ---@class setupOpts
+-- ---@field paths table<string> the paths where to look for your translation files
+-- ---@field sources table<string> the cmp sources
+--
+-- ---comment
+-- ---@param opts setupOpts
+-- local function setup(opts)
+-- end
+
+
+local source = {}
+
+function source:new()
+  return setmetatable({}, { __index = self })
+end
+
+-- function source:get_keyword_pattern()
+--   -- return [[(\w|\.|-)+]] -- letters, digits, _, ., -
+-- end
+--
+
+function source:get_keyword_pattern()
+  return [[\w*\%(\%(-|\.\)\w*\)*]]
+end
+
+function source:is_available()
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local line = vim.api.nvim_get_current_line()
+  local before_cursor = line:sub(1, col)
+
+  -- match t(" ... ") or t(' ... ')
+  local _, start_quote = before_cursor:find('t%s*%(%s*["\']')
+  return start_quote ~= nil
+end
+
+function source:complete(ctx, callback)
+  local items = {}
+  for _, key in ipairs(i18n.cache_keys) do
+    table.insert(items, { label = key, kind = vim.lsp.protocol.CompletionItemKind.Value })
+  end
+  callback({ items = items })
+end
+
+-- table.insert(opts.sources, { name = 'i18n' })
+-- cmp.setup {
+--   sources = opts.sources,
+--
+--   mapping = cmp.mapping.preset.insert({
+--     ['<Tab>'] = nil,
+--     ['<S-Tab>'] = nil,
+--   }),
+--
+--   snippet = {
+--     expand = function(args)
+--       local luasnip = require('luasnip')
+--       luasnip.lsp_expand(args.body) -- For `luasnip` users.
+--     end
+--   },
+--   enabled = function()
+--     -- disable completion in comments
+--     local context = require 'cmp.config.context'
+--     -- keep command mode completion enabled when cursor is in a comment
+--     -- if vim.api.nvim_get_mode().mode == 'c' then
+--     --   return true
+--     -- else
+--     --   return not context.in_treesitter_capture("comment") and not context.in_syntax_group("Comment")
+--     -- end
+--     return true
+--   end
+-- }
+return { source = source, refresh_keys = refresh_keys }
