@@ -85,6 +85,7 @@ end
 
 function source:complete(params, callback)
   local input = string.sub(params.context.cursor_before_line, params.offset)
+  vim.print(input)
 
   -- match t(" ... ") or t(' ... ')
   local match = input:match('t%s*%(%s*["\']')
