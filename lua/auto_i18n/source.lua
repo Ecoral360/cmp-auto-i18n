@@ -34,10 +34,10 @@ local function load_keys(keys)
   return keys
 end
 
-local i18n = { get_keys = load_keys, cache_keys = load_keys() }
+local i18n = { get_keys = load_keys, cache_keys = {} }
 
 local function refresh_keys()
-  i18n.cache_keys = i18n.load_keys()
+  i18n.cache_keys = i18n.get_keys()
 end
 
 -- ---@class setupOpts
