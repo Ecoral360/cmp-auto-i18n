@@ -6,4 +6,4 @@ vim.api.nvim_create_user_command('I18nRefresh',
 
 i18n.refresh_keys()
 
-require('cmp').register_source('i18n', i18n.source:new())
+require('cmp').register_source('i18n', i18n.source.new())
