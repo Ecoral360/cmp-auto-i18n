@@ -77,9 +77,9 @@ end
 --   local _, start_quote = before_cursor:find('t%s*%(%s*["\']')
 --   return start_quote ~= nil
 -- end
-function source:get_trigger_characters()
-  return { '"', '.' }
-end
+-- function source:get_trigger_characters()
+--   return { '"', '.' }
+-- end
 
 function source:complete(params, callback)
   local input = string.sub(params.context.cursor_before_line, params.offset)
@@ -87,7 +87,7 @@ function source:complete(params, callback)
   -- match t(" ... ") or t(' ... ')
   local match = input:match('t%s*%(%s*["\']')
   if match == nil then
-    return callback({ items = {} })
+    return callback()
   end
 
   if not self.i18n.cache_keys then
