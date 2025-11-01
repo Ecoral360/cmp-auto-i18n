@@ -83,22 +83,20 @@ function source:is_available()
   return true
 end
 
-function source:complete(_, callback)
-  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-  local line = vim.api.nvim_get_current_line()
-  local before_cursor = line:sub(1, col)
+function source:complete(params, callback)
+  local input = string.sub(params.context.cursor_before_line, params.offset)
 
   -- match t(" ... ") or t(' ... ')
-  local _, start_quote = before_cursor:find('t%s*%(%s*["\']')
-  if start_quote == nil then
-    return {}
+  local match = input:match('t%s*%(%s*["\']')
+  if match == nil then
+    return callback({ items = {} })
   end
 
   local items = {}
   for _, key in ipairs(self.i18n.cache_keys) do
     table.insert(items, { label = key, kind = vim.lsp.protocol.CompletionItemKind.Value })
   end
-  callback({ items = items })
+  return callback({ items = items })
 end
 
 return source
