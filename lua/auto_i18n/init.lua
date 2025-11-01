@@ -34,7 +34,7 @@ local function load_keys(keys)
   return keys
 end
 
-local i18n = { get_keys = load_keys, cache_keys = load_keys() }
+local i18n = { get_keys = load_keys }
 
 ---@class setupOpts
 ---@field paths table<string> the paths where to look for your translation files
@@ -87,9 +87,13 @@ function source:complete(params, callback)
 
   -- match t(" ... ") or t(' ... ')
   local match = input:match('t%s*%(%s*["\']')
-  -- if match == nil then
-  --   return callback({ items = {} })
-  -- end
+  if match == nil then
+    return callback({ items = {} })
+  end
+
+  if not self.i18n.cache_keys then
+    self:refresh()
+  end
 
   local items = {}
   for _, key in ipairs(self.i18n.cache_keys) do
