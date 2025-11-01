@@ -65,7 +65,6 @@ end
 --
 
 function source:get_keyword_pattern()
-  vim.print("called")
   return [[\%(\h\w*\%[-\._\w\]*\)]]
 end
 
@@ -80,6 +79,7 @@ end
 -- end
 
 function source:is_available()
+  vim.print("called")
   return true
 end
 
