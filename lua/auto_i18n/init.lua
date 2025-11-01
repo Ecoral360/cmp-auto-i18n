@@ -79,7 +79,7 @@ end
 -- end
 
 function source:is_available()
-  vim.print("called")
+  print("called")
   return true
 end
 
