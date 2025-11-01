@@ -52,8 +52,10 @@ end
 
 local source = {}
 
-function source:new()
-  return setmetatable({}, { __index = self })
+function source.new()
+  local self = setmetatable({}, { __index = source })
+  self.regex = vim.regex([[\%(\.\|\w\)\+\ze\.\w*]])
+  return self
 end
 
 -- function source:get_keyword_pattern()
