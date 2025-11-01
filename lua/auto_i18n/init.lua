@@ -47,6 +47,10 @@ local i18n = { get_keys = load_keys, cache_keys = load_keys() }
 
 local source = { i18n = i18n }
 
+vim.api.nvim_create_user_command('I18nRefresh',
+  function() source:refresh() end, {}
+)
+
 function source:refresh()
   self.i18n.cache_keys = self.i18n.get_keys()
 end
@@ -65,17 +69,27 @@ end
 --   [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\%(\w\|á\|Á\|é\|É\|í\|Í\|ó\|Ó\|ú\|Ú\)*\%(\%(-|\.\)\%(\w\|á\|Á\|é\|É\|í\|Í\|ó\|Ó\|ú\|Ú\)*\)*\)]]
 -- end
 
-function source:is_available()
+-- function source:is_available()
+--   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+--   local line = vim.api.nvim_get_current_line()
+--   local before_cursor = line:sub(1, col)
+--
+--   -- match t(" ... ") or t(' ... ')
+--   local _, start_quote = before_cursor:find('t%s*%(%s*["\']')
+--   return start_quote ~= nil
+-- end
+
+function source:complete(_, callback)
   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
   local line = vim.api.nvim_get_current_line()
   local before_cursor = line:sub(1, col)
 
   -- match t(" ... ") or t(' ... ')
   local _, start_quote = before_cursor:find('t%s*%(%s*["\']')
-  return start_quote ~= nil
-end
+  if start_quote == nil then
+    return {}
+  end
 
-function source:complete(_, callback)
   local items = {}
   for _, key in ipairs(self.i18n.cache_keys) do
     table.insert(items, { label = key, kind = vim.lsp.protocol.CompletionItemKind.Value })
