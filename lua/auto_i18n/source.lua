@@ -46,7 +46,7 @@ local function setup(opts)
   local cmp = require("cmp")
 
   vim.api.nvim_create_user_command('I18nRefresh',
-    function() i18n.cache_keys = i18n.get_keys(opts.paths) end, {}
+    function() i18n.cache_keys = i18n.get_keys() end, {}
   )
 
   local source = {}
