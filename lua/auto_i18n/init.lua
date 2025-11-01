@@ -85,7 +85,7 @@ function source:complete(params, callback)
   local input = string.sub(params.context.cursor_before_line, params.offset)
 
   -- match t(" ... ") or t(' ... ')
-  local match = input:match('t%s*%(%s*["\']')
+  local match = input:find('t%s*%(%s*["\']')
   if match == nil then
     return callback()
   end
