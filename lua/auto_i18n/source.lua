@@ -61,7 +61,8 @@ local function setup(opts)
   --
 
   function source:get_keyword_pattern()
-    return [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\%(\w\|á\|Á\|é\|É\|í\|Í\|ó\|Ó\|ú\|Ú\)*\%(\%(-|\.\)\%(\w\|á\|Á\|é\|É\|í\|Í\|ó\|Ó\|ú\|Ú\)*\)*\)]]
+    return
+    [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\%(\w\|á\|Á\|é\|É\|í\|Í\|ó\|Ó\|ú\|Ú\)*\%(\%(-|\.\)\%(\w\|á\|Á\|é\|É\|í\|Í\|ó\|Ó\|ú\|Ú\)*\)*\)]]
   end
 
   function source:is_available()
@@ -82,35 +83,36 @@ local function setup(opts)
     callback({ items = items })
   end
 
-  cmp.register_source("i18n", source:new())
-
-  table.insert(opts.sources, { name = 'i18n' })
-  cmp.setup {
-    sources = opts.sources,
-
-    mapping = cmp.mapping.preset.insert({
-      ['<Tab>'] = nil,
-      ['<S-Tab>'] = nil,
-    }),
-
-    snippet = {
-      expand = function(args)
-        local luasnip = require('luasnip')
-        luasnip.lsp_expand(args.body) -- For `luasnip` users.
-      end
-    },
-    enabled = function()
-      -- disable completion in comments
-      local context = require 'cmp.config.context'
-      -- keep command mode completion enabled when cursor is in a comment
-      -- if vim.api.nvim_get_mode().mode == 'c' then
-      --   return true
-      -- else
-      --   return not context.in_treesitter_capture("comment") and not context.in_syntax_group("Comment")
-      -- end
-      return true
-    end
-  }
+  -- cmp.register_source("i18n", source:new())
+  --
+  -- table.insert(opts.sources, { name = 'i18n' })
+  -- cmp.setup {
+  --   sources = opts.sources,
+  --
+  --   mapping = cmp.mapping.preset.insert({
+  --     ['<Tab>'] = nil,
+  --     ['<S-Tab>'] = nil,
+  --   }),
+  --
+  --   snippet = {
+  --     expand = function(args)
+  --       local luasnip = require('luasnip')
+  --       luasnip.lsp_expand(args.body) -- For `luasnip` users.
+  --     end
+  --   },
+  --   enabled = function()
+  --     -- disable completion in comments
+  --     local context = require 'cmp.config.context'
+  --     -- keep command mode completion enabled when cursor is in a comment
+  --     -- if vim.api.nvim_get_mode().mode == 'c' then
+  --     --   return true
+  --     -- else
+  --     --   return not context.in_treesitter_capture("comment") and not context.in_syntax_group("Comment")
+  --     -- end
+  --     return true
+  --   end
+  -- }
+  return source:new()
 end
 
 return { setup = setup, get_keys = load_keys }
