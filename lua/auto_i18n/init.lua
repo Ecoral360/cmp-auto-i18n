@@ -65,7 +65,7 @@ end
 --
 
 function source:get_keyword_pattern()
-  return [[\%(\h\%[-\._\w\]*\)]]
+  return [[\%(\h\w*\%[-\._\w\]*\)]]
 end
 
 -- function source:is_available()
