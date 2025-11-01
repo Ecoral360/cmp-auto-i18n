@@ -51,7 +51,7 @@ vim.api.nvim_create_user_command('I18nRefresh',
   function() source:refresh() end, {}
 )
 
-function source:refresh()
+function source.refresh(self)
   self.i18n.cache_keys = self.i18n.get_keys()
 end
 
@@ -64,7 +64,7 @@ end
 -- end
 --
 
-function source:get_keyword_pattern()
+function source.get_keyword_pattern()
   return [[\%(\h\w*\%[-\._\w\]*\)]]
 end
 
@@ -81,7 +81,7 @@ end
 --   return { '"', '.' }
 -- end
 
-function source:complete(params, callback)
+function source.complete(self, params, callback)
   local input = string.sub(params.context.cursor_before_line, params.offset)
 
   -- match t(" ... ") or t(' ... ')
