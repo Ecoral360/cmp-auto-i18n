@@ -84,13 +84,12 @@ end
 
 function source:complete(params, callback)
   local input = string.sub(params.context.cursor_before_line, params.offset)
-  vim.print(input)
 
   -- match t(" ... ") or t(' ... ')
   local match = input:match('t%s*%(%s*["\']')
-  if match == nil then
-    return callback({ items = {} })
-  end
+  -- if match == nil then
+  --   return callback({ items = {} })
+  -- end
 
   local items = {}
   for _, key in ipairs(self.i18n.cache_keys) do
