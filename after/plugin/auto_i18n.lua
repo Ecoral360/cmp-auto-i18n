@@ -6,4 +6,14 @@
 --
 -- i18n.refresh_keys()
 --
-require('cmp').register_source('i18n', require("auto_i18n").setup())
+require('cmp').register_source('i18n', require("auto_i18n").new())
+
+local auto_i18n = vim.api.nvim_create_augroup("auto_i18n", {})
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = 'I18nRefresh',
+  callback = function()
+    require("auto_i18n"):refresh()
+  end,
+  group = auto_i18n
+})
