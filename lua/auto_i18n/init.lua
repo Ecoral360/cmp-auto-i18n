@@ -64,10 +64,10 @@ end
 -- end
 --
 
--- function source:get_keyword_pattern()
---   return
---   [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\%(\w\|á\|Á\|é\|É\|í\|Í\|ó\|Ó\|ú\|Ú\)*\%(\%(-|\.\)\%(\w\|á\|Á\|é\|É\|í\|Í\|ó\|Ó\|ú\|Ú\)*\)*\)]]
--- end
+function source:get_keyword_pattern()
+  return
+  [[\%(-\?\d\+\%(\.\d\+\)\?\|\h\%(\w\|á\|Á\|é\|É\|í\|Í\|ó\|Ó\|ú\|Ú\)*\%(\%(-|\.\)\%(\w\|á\|Á\|é\|É\|í\|Í\|ó\|Ó\|ú\|Ú\)*\)*\)]]
+end
 
 -- function source:is_available()
 --   local row, col = unpack(vim.api.nvim_win_get_cursor(0))
