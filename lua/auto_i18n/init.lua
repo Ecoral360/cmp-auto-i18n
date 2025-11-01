@@ -83,6 +83,7 @@ function source:is_available()
 end
 
 function source:complete(params, callback)
+  vim.print("called")
   local input = string.sub(params.context.cursor_before_line, params.offset)
 
   -- match t(" ... ") or t(' ... ')
