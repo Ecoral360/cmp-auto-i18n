@@ -65,6 +65,7 @@ end
 --
 
 function source:get_keyword_pattern()
+  vim.print("called")
   return [[\%(\h\w*\%[-\._\w\]*\)]]
 end
 
@@ -83,7 +84,6 @@ function source:is_available()
 end
 
 function source:complete(params, callback)
-  vim.print("called")
   local input = string.sub(params.context.cursor_before_line, params.offset)
 
   -- match t(" ... ") or t(' ... ')
